@@ -1,9 +1,13 @@
 <?php
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: Authorization');
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\PassportAuthController;
 use App\Http\Controllers\API\ProductController;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +19,33 @@ use App\Http\Controllers\API\ProductController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::post('login-verify', function (Request $request) {
+
+    $info = [
+        'success' => false,
+        'token' => null,
+    ];
+
+    $user = User::where('username', $request->username)->first();
+
+    if (!empty($user) && Hash::check($request->password, $user->password)) {
+        $info['success'] = true;
+        $token = $user->createToken($user->id)->plainTextToken;
+        return [
+            'success' => true,
+            'token' => $token,
+        ];
+    } else {
+        return [
+            'success' => false,
+        ];
+    }
+});
+
+Route::middleware('auth:sanctum')->get('/auth-user', function (Request $request) {
+    return $request->user();
+});
 
 Route::post('/register', [App\Http\Controllers\API\AuthController::class, 'register']);
 Route::post('/login', [App\Http\Controllers\API\AuthController::class, 'login']);
