@@ -1,10 +1,12 @@
 <?php
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Headers: Authorization');
+// header('Access-Control-Allow-Origin: *');
+// header('Access-Control-Allow-Headers: Authorization');
 
+use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\PassportAuthController;
+use App\Http\Controllers\api\PostController;
 use App\Http\Controllers\API\ProductController;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -20,44 +22,44 @@ use Illuminate\Support\Facades\Hash;
 |
 */
 
-Route::post('login-verify', function (Request $request) {
+// Route::post('login-verify', function (Request $request) {
 
-    $info = [
-        'success' => false,
-        'token' => null,
-    ];
+//     $info = [
+//         'success' => false,
+//         'token' => null,
+//     ];
 
-    $user = User::where('username', $request->username)->first();
+//     $user = User::where('username', $request->username)->first();
 
-    if (!empty($user) && Hash::check($request->password, $user->password)) {
-        $info['success'] = true;
-        $token = $user->createToken($user->id)->plainTextToken;
-        return [
-            'success' => true,
-            'token' => $token,
-        ];
-    } else {
-        return [
-            'success' => false,
-        ];
-    }
-});
+//     if (!empty($user) && Hash::check($request->password, $user->password)) {
+//         $info['success'] = true;
+//         $token = $user->createToken($user->id)->plainTextToken;
+//         return [
+//             'success' => true,
+//             'token' => $token,
+//         ];
+//     } else {
+//         return [
+//             'success' => false,
+//         ];
+//     }
+// });
 
-Route::middleware('auth:sanctum')->get('/auth-user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/auth-user', function (Request $request) {
+//     return $request->user();
+// });
 
-Route::post('/register', [App\Http\Controllers\API\AuthController::class, 'register']);
-Route::post('/login', [App\Http\Controllers\API\AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/profile', function (Request $request) {
         return auth()->user();
     });
-    Route::post('/logout', [App\Http\Controllers\API\AuthController::class, 'logout']);
-    Route::get('get-user', [App\Http\Controllers\API\AuthController::class, 'userInfo']);
-    Route::resource('products', App\Http\Controllers\API\ProductController::class);
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('get-user', [AuthController::class, 'userInfo']);
+    Route::resource('products', ProductController::class);
 });
-Route::apiResource('/posts', App\Http\Controllers\Api\PostController::class);
+Route::apiResource('/posts', PostController::class);
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
