@@ -22,32 +22,32 @@ use Illuminate\Support\Facades\Hash;
 |
 */
 
-// Route::post('login-verify', function (Request $request) {
+Route::post('login-verify', function (Request $request) {
 
-//     $info = [
-//         'success' => false,
-//         'token' => null,
-//     ];
+    $info = [
+        'success' => false,
+        'token' => null,
+    ];
 
-//     $user = User::where('username', $request->username)->first();
+    $user = User::where('email', $request->email)->first();
 
-//     if (!empty($user) && Hash::check($request->password, $user->password)) {
-//         $info['success'] = true;
-//         $token = $user->createToken($user->id)->plainTextToken;
-//         return [
-//             'success' => true,
-//             'token' => $token,
-//         ];
-//     } else {
-//         return [
-//             'success' => false,
-//         ];
-//     }
-// });
+    if (!empty($user) && Hash::check($request->password, $user->password)) {
+        $info['success'] = true;
+        $token = $user->createToken($user->id)->plainTextToken;
+        return [
+            'success' => true,
+            'token' => $token,
+        ];
+    } else {
+        return [
+            'success' => false,
+        ];
+    }
+});
 
-// Route::middleware('auth:sanctum')->get('/auth-user', function (Request $request) {
-//     return $request->user();
-// });
+Route::middleware('auth:sanctum')->get('/auth-user', function (Request $request) {
+    return $request->user();
+});
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
