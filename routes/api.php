@@ -1,6 +1,6 @@
 <?php
-// header('Access-Control-Allow-Origin: *');
-// header('Access-Control-Allow-Headers: Authorization');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: Authorization');
 
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
