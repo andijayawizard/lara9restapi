@@ -1,6 +1,6 @@
 <?php
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Headers: Authorization');
+// header('Access-Control-Allow-Origin: *');
+// header('Access-Control-Allow-Headers: Authorization');
 
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
@@ -45,9 +45,9 @@ Route::post('login-verify', function (Request $request) {
     }
 });
 
-Route::middleware('auth:sanctum')->get('/auth-user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/auth-user', function (Request $request) {
+//     return $request->user();
+// });
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -56,10 +56,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         return auth()->user();
     });
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('get-user', [AuthController::class, 'userInfo']);
-    Route::resource('products', ProductController::class);
+    // Route::get('get-user', [AuthController::class, 'userInfo']);
+    Route::get('auth-user', [AuthController::class, 'userInfo']);
 });
 Route::apiResource('/posts', PostController::class);
+Route::resource('products', ProductController::class);
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });

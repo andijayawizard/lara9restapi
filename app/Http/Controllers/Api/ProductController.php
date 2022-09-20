@@ -11,7 +11,8 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
+        // $products = Product::all();
+        $products = Product::latest()->paginate(10);
         return response()->json([
             'success' => true, 'message' => 'Product List', 'data' => $products
         ]);
