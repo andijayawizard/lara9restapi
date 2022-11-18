@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Validator;
+use Illuminate\Support\Facades\Validator as FacadesValidator;
 
 class ProductController extends Controller
 {
@@ -20,7 +20,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
-        $validator = Validator::make($input, [
+        $validator = FacadesValidator::make($input, [
             'name' => 'required',
             'detail' => 'required',
         ]);
@@ -45,7 +45,7 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $input = $request->all();
-        $validator = Validator::make($input, [
+        $validator = FacadesValidator::make($input, [
             'name' => 'required',
             'detail' => 'required',
         ]);
