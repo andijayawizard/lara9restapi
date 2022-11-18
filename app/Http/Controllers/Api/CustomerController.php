@@ -47,10 +47,10 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Customer $id)
+    public function show(Customer $customer)
     {
         // $data=Customer::findById($id);
-        return new CustomerResource($id);
+        return new CustomerResource($customer);
     }
 
     /**
