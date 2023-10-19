@@ -59,7 +59,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     // Route::get('get-user', [AuthController::class, 'userInfo']);
     Route::get('auth-user', [AuthController::class, 'userInfo']);
-    Route::resource('customer', CustomerController::class)->only(['index', 'show']);
+    // Route::resource('customer', CustomerController::class)->only(['index', 'show']);
 });
 Route::apiResource('/posts', PostController::class);
 Route::resource('products', ProductController::class);
@@ -68,6 +68,7 @@ Route::resource('products', ProductController::class);
 // });
 Route::post('register', [PassportAuthController::class, 'register']);
 Route::post('login', [PassportAuthController::class, 'login']);
+    Route::resource('customer', CustomerController::class)->only(['index', 'show']);
 
 // Route::middleware('auth:api')->group(function () {
 //     Route::get('get-user', [PassportAuthController::class, 'userInfo']);
